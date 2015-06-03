@@ -1,0 +1,28 @@
+{
+  "name": "react-prop-types",
+  "version": "0.0.0",
+  "description": "React PropType Utilities",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-bootstrap/react-prop-types.git"
+  },
+  "keywords": [
+    "react",
+    "react-proptype",
+    "react-proptypes",
+    "react-prop-type",
+    "react-prop-types",
+    "react-component",
+    "ecosystem-react"
+  ],
+  "author": "Matthew L Smith <mtscout6@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/react-bootstrap/react-prop-types/issues"
+  },
+  "homepage": "https://github.com/react-bootstrap/react-prop-types#readme"
+}
