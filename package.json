@@ -22,7 +22,6 @@
     "type": "git",
     "url": "git+https://github.com/react-bootstrap/react-prop-types.git"
   },
-  "bowerRepo": "git@github.com:react-bootstrap/react-prop-types-bower.git",
   "keywords": [
     "react",
     "react-proptype",
