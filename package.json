@@ -68,5 +68,8 @@
     "sinon-chai": "^2.8.0",
     "webpack": "^1.10.1",
     "yargs": "^3.14.0"
+  },
+  "dependencies": {
+    "warning": "^2.0.0"
   }
 }

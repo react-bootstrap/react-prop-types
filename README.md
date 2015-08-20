@@ -243,6 +243,25 @@ ButtonInput.propTypes = {
   value: childrenValueValidation
 ```
 
+---
+#### deprecated(propType, explanation)
+
+Helps with properties deprecations
+
+Example
+```js
+propTypes: {
+  collapsable: deprecated(React.PropTypes.bool, 'Use "collapsible" instead.')
+```
+
+In development mode it will write to the development console of a browser:
+```
+"collapsable" property of "ComponentName" has been deprecated.
+Use "collapsible" instead.
+```
+
+_Notice: this custom validator uses 'warning' package under the hood.
+And this package uses `console.error` channel instead of `console.warn`._
 
 [build-badge]: https://travis-ci.org/react-bootstrap/react-prop-types.svg?branch=master
 [build]: https://travis-ci.org/react-bootstrap/react-prop-types
