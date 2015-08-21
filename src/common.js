@@ -23,7 +23,7 @@ export function createChainableTypeChecker(validate) {
     }
   }
 
-  let chainedCheckType = checkType.bind(null, false);
+  const chainedCheckType = checkType.bind(null, false);
   chainedCheckType.isRequired = checkType.bind(null, true);
 
   return chainedCheckType;

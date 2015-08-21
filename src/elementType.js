@@ -15,7 +15,7 @@ import {errMsg, createChainableTypeChecker} from './common';
  */
 
 function validate(props, propName, componentName) {
-  let errBeginning = errMsg(props, propName, componentName,
+  const errBeginning = errMsg(props, propName, componentName,
     '. Expected an Element `type`');
 
   if (typeof props[propName] !== 'function') {

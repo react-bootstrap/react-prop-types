@@ -8,7 +8,7 @@ export function shouldError(about) {
   console.error.reset();
 }
 
-describe('deprecated', function () {
+describe('deprecated', function() {
   beforeEach(function() {
     // because 'warning' package uses console.error instead of console.warn
     sinon.stub(console, 'error');
@@ -23,13 +23,13 @@ describe('deprecated', function () {
   }
 
   it('Should warn about deprecation and validate OK', function() {
-    let err = validate('value');
+    const err = validate('value');
     shouldError('"pName" property of "ComponentName" has been deprecated.\nRead more at link');
     assert.notInstanceOf(err, Error);
   });
 
   it('Should warn about deprecation and throw validation error when property value is not OK', function() {
-    let err = validate({});
+    const err = validate({});
     shouldError('"pName" property of "ComponentName" has been deprecated.\nRead more at link');
     assert.instanceOf(err, Error);
     assert.include(err.message, 'Invalid undefined `pName` of type `object` supplied to `ComponentName`');

@@ -1,8 +1,8 @@
 import keyOf from '../src/keyOf';
 import {isChainableAndUndefinedOK} from './helpers.js';
 
-describe('keyOf', function () {
-  let obj = {'foo': 1};
+describe('keyOf', function() {
+  const obj = {'foo': 1};
   function validate(prop) {
     return keyOf(obj)({p: prop}, 'p', 'Component');
   }
@@ -10,7 +10,7 @@ describe('keyOf', function () {
   isChainableAndUndefinedOK(keyOf(obj));
 
   it('Should return error with non-key values', function() {
-    let err = validate('bar');
+    const err = validate('bar');
     assert.instanceOf(err, Error);
     assert.include(err.message, 'expected one of ["foo"]');
   });
