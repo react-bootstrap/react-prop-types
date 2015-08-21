@@ -37,7 +37,7 @@ describe('all', function() {
   it('validates each validation', function() {
     const allValidator = all(validators);
 
-    let result = allValidator(props, propName, componentName);
+    const result = allValidator(props, propName, componentName);
     expect(result).to.equal(undefined);
 
     validators.forEach(x => {
@@ -47,11 +47,11 @@ describe('all', function() {
   });
 
   it('returns first validation failure', function() {
-    let err = new Error('Failure');
+    const err = new Error('Failure');
     validators[1].returns(err);
     const allValidator = all(validators);
 
-    let result = allValidator(props, propName, componentName);
+    const result = allValidator(props, propName, componentName);
     expect(result).to.equal(err);
 
     validators[0].should.have.been.calledOnce

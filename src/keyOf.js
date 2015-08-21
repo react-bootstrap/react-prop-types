@@ -10,9 +10,9 @@ import {errMsg, createChainableTypeChecker} from './common';
  */
 export default function keyOf(obj) {
   function validate(props, propName, componentName) {
-    let propValue = props[propName];
+    const propValue = props[propName];
     if (!obj.hasOwnProperty(propValue)) {
-      let valuesString = JSON.stringify(Object.keys(obj));
+      const valuesString = JSON.stringify(Object.keys(obj));
       return new Error(
         errMsg(props, propName, componentName, `, expected one of ${valuesString}.`)
       );

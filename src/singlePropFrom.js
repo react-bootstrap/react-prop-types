@@ -7,7 +7,7 @@
  * @param componentName
  * @returns {Error|undefined}
  */
- export default function createSinglePropFromChecker(arrOfProps) {
+export default function createSinglePropFromChecker(arrOfProps) {
   function validate(props, propName, componentName) {
     const usedPropCount = arrOfProps
       .map(listedProp => props[listedProp])

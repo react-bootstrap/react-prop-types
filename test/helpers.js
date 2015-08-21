@@ -5,7 +5,7 @@ export function isChainableAndUndefinedOK(validatorUnderTest) {
   });
 
   it('Should be able to chain', function() {
-    let err = validatorUnderTest.isRequired({}, 'p', 'Component');
+    const err = validatorUnderTest.isRequired({}, 'p', 'Component');
     assert.instanceOf(err, Error);
     assert.include(err.message, 'Required prop');
     assert.include(err.message, 'was not specified in');

@@ -1,5 +1,5 @@
-export default function isRequiredForA11y(propType){
-  return function(props, propName, componentName){
+export default function isRequiredForA11y(propType) {
+  return function validate(props, propName, componentName) {
     if (props[propName] === null) {
       return new Error(
         `The prop '${propName}' is required to make '${componentName}' accessible` +

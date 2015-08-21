@@ -11,9 +11,9 @@ export default function all(propTypes) {
     throw new Error('No validations provided');
   }
 
-  return function(props, propName, componentName) {
-    for(let i = 0; i < propTypes.length; i++) {
-      let result = propTypes[i](props, propName, componentName);
+  return function validate(props, propName, componentName) {
+    for (let i = 0; i < propTypes.length; i++) {
+      const result = propTypes[i](props, propName, componentName);
 
       if (result !== undefined && result !== null) {
         return result;
