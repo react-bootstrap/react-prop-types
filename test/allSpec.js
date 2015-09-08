@@ -22,20 +22,14 @@ describe('all', function() {
     }).to.throw(Error, /No validations provided/);
   });
 
-  it('with no validations provided', function() {
-    expect(() => {
-      all([]);
-    }).to.throw(Error, /No validations provided/);
-  });
-
   it('with invalid arguments provided', function() {
     expect(() => {
       all(1);
-    }).to.throw(Error, /Invalid argument must be an array/);
+    }).to.throw(Error, /Invalid arguments, must be functions/);
   });
 
   it('validates each validation', function() {
-    const allValidator = all(validators);
+    const allValidator = all(...validators);
 
     const result = allValidator(props, propName, componentName);
     expect(result).to.equal(undefined);
@@ -49,7 +43,7 @@ describe('all', function() {
   it('returns first validation failure', function() {
     const err = new Error('Failure');
     validators[1].returns(err);
-    const allValidator = all(validators);
+    const allValidator = all(...validators);
 
     const result = allValidator(props, propName, componentName);
     expect(result).to.equal(err);

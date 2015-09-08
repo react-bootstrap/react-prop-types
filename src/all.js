@@ -1,10 +1,10 @@
-export default function all(propTypes) {
+export default function all(...propTypes) {
   if (propTypes === undefined) {
     throw new Error('No validations provided');
   }
 
-  if (!(propTypes instanceof Array)) {
-    throw new Error('Invalid argument must be an array');
+  if (propTypes.some(propType => typeof propType !== 'function')) {
+    throw new Error('Invalid arguments, must be functions');
   }
 
   if (propTypes.length === 0) {

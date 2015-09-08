@@ -30,7 +30,7 @@ import elementType from 'react-prop-types/elementType'
 ```
 
 ---
-#### all(arrayOfValidators)
+#### all(...arrayOfValidators)
 
 This validator allows to have complex validation like this:
 ```js
@@ -40,14 +40,14 @@ propTypes: {
    * Display block buttons, only useful when used with the "vertical" prop.
    * @type {bool}
    */
-  block: CustomPropTypes.all([
+  block: CustomPropTypes.all(
     React.PropTypes.bool,
     function(props, propName, componentName) {
       if (props.block && !props.vertical) {
         return new Error('The block property requires the vertical property to be set to have any effect');
       }
     }
-  ])
+  )
 ```
 
 All validators will be validated one by one, stopping on the first failure.
@@ -196,7 +196,7 @@ React.render(<Example/>, mountNode);
 ```
 
 ---
-#### singlePropFrom(arrayOfPropertiesNames)
+#### singlePropFrom(...propertyNames)
 
 Used when it needs to assure that only one of properties can be used.
 
@@ -224,11 +224,10 @@ The possible solution
 ```js
 import { singlePropFrom } from 'react-prop-types/singlePropFrom';
 
-const propList = ['children', 'value'];
 const typeList = [React.PropTypes.number, React.PropTypes.string];
 
 function childrenValueValidation(props, propName, componentName) {
-  let error = singlePropFrom(propList)(props, propName, componentName);
+  let error = singlePropFrom('children', 'value')(props, propName, componentName);
   if (!error) {
     const oneOfType = React.PropTypes.oneOfType(typeList);
     error = oneOfType(props, propName, componentName);
