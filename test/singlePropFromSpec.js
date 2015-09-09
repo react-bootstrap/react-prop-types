@@ -2,9 +2,7 @@ import singlePropFrom from '../src/singlePropFrom';
 
 describe('singlePropFrom', function() {
   function validate(testProps) {
-    const propList = ['children', 'value'];
-
-    return singlePropFrom(propList)(testProps, 'value', 'Component');
+    return singlePropFrom('children', 'value')(testProps, 'value', 'Component');
   }
 
   it('Should validate OK if only one listed prop in used', function() {
