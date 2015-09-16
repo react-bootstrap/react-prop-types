@@ -48,7 +48,7 @@
     "eslint-config-airbnb": "0.0.8",
     "eslint-plugin-babel": "^2.0.0",
     "eslint-plugin-mocha": "^0.5.1",
-    "eslint-plugin-react": "^3.2.3",
+    "eslint-plugin-react": "3.3.2",
     "isparta-loader": "^0.2.0",
     "karma": "^0.13.7",
     "karma-chrome-launcher": "^0.2.0",
