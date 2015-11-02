@@ -18,7 +18,7 @@ propTypes: {
 ```
 or
 ```js
-import CustomPropTypes from 'react-prop-types';
+import * as CustomPropTypes from 'react-prop-types';
 // and then used as usual
 propTypes: {
   someProp: CustomPropTypes.elementType
