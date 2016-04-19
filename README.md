@@ -9,7 +9,7 @@ Initially they were part of the [React-Bootstrap](https://github.com/react-boots
 
 All validators can be imported as
 ```js
-import elementType from 'react-prop-types/elementType';
+import elementType from 'react-prop-types/lib/elementType';
 // or
 import { elementType } from 'react-prop-types';
 ...
@@ -26,7 +26,7 @@ propTypes: {
 
 If you use `webpack` and only want to bundle the validators you need, prefer the following approach:
 ```js
-import elementType from 'react-prop-types/elementType'
+import elementType from 'react-prop-types/lib/elementType'
 ```
 
 ---
@@ -222,7 +222,7 @@ But this should throw the `only one of the following may be provided` error
 
 The possible solution
 ```js
-import { singlePropFrom } from 'react-prop-types/singlePropFrom';
+import singlePropFrom from 'react-prop-types/lib/singlePropFrom';
 
 const typeList = [React.PropTypes.number, React.PropTypes.string];
 
