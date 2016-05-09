@@ -21,7 +21,7 @@ export default function all(...propTypes) {
         return result;
       }
     }
-  };
-  
+  }
+
   return createChainableTypeChecker(validate);
 }
