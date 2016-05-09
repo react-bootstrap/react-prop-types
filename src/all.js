@@ -1,3 +1,5 @@
+import {createChainableTypeChecker} from './common';
+
 export default function all(...propTypes) {
   if (propTypes === undefined) {
     throw new Error('No validations provided');
@@ -11,7 +13,7 @@ export default function all(...propTypes) {
     throw new Error('No validations provided');
   }
 
-  return function validate(props, propName, componentName) {
+  function validate(props, propName, componentName) {
     for (let i = 0; i < propTypes.length; i++) {
       const result = propTypes[i](props, propName, componentName);
 
@@ -19,5 +21,7 @@ export default function all(...propTypes) {
         return result;
       }
     }
-  };
+  }
+
+  return createChainableTypeChecker(validate);
 }

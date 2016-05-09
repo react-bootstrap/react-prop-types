@@ -56,4 +56,19 @@ describe('all', function() {
 
     validators[2].should.not.have.been.called;
   });
+
+  it('always fails when prop value is missing and isRequired is used', function() {
+    const missingPropName = 'missing';
+    const allValidator = all(...validators).isRequired;
+    const expectedErr = new Error(
+      `Required prop '${missingPropName}' was not specified in '${componentName}'.`
+    );
+
+    const result = allValidator(props, missingPropName, componentName);
+    expect(result.toString()).to.equal(expectedErr.toString()); // cannot compare values, as we got different Error instances here.
+
+    validators[0].should.not.have.been.called;
+    validators[1].should.not.have.been.called;
+    validators[2].should.not.have.been.called;
+  });
 });
