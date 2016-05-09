@@ -1,3 +1,12 @@
+## [v0.3.1]
+> 2016-05-09
+
+- **Bugfix:** Support `isRequired` on `all` ([#22])
+
+[v0.3.1]: https://github.com/react-bootstrap/react-prop-types/compare/v0.3.0...v0.3.1
+[#22]: https://github.com/react-bootstrap/react-prop-types/pull/22
+
+
 v0.3.0 - Thu, 10 Sep 2015 19:23:24 GMT
 --------------------------------------
 
