@@ -1,266 +1,116 @@
-# react-prop-types
+# react-prop-types [![Travis][build-badge]][build] [![npm][npm-badge]][npm]
 
-[![Travis Build Status][build-badge]][build]
+Additional [PropTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) for [React](https://facebook.github.io/react/).
 
-This is a library of some custom validators for React components properties.
-Initially they were part of the [React-Bootstrap](https://github.com/react-bootstrap/react-bootstrap/) project.
+## Usage
 
-### Usage
-
-All validators can be imported as
 ```js
 import elementType from 'react-prop-types/lib/elementType';
 // or
 import { elementType } from 'react-prop-types';
-...
-propTypes: {
-  someProp: elementType
-```
-or
-```js
-import * as CustomPropTypes from 'react-prop-types';
-// and then used as usual
-propTypes: {
-  someProp: CustomPropTypes.elementType
+
+const propTypes = {
+  someProp: elementType,
+};
 ```
 
-If you use `webpack` and only want to bundle the validators you need, prefer the following approach:
+If you want to minimize bundle size, import only the validators you use via:
+
 ```js
 import elementType from 'react-prop-types/lib/elementType'
 ```
 
----
-#### all(...arrayOfValidators)
+## Guide
 
-This validator allows to have complex validation like this:
+### Installation
+
+```sh
+$ npm i -S react
+$ npm i -S react-prop-types
+```
+
+### [`all(...validators)`](/src/all.js)
+
+This validator checks that all of the provided validators pass.
+
 ```js
-propTypes: {
-  vertical:  React.PropTypes.bool,
-  /**
-   * Display block buttons, only useful when used with the "vertical" prop.
-   * @type {bool}
-   */
-  block: CustomPropTypes.all(
-    React.PropTypes.bool,
-    function(props, propName, componentName) {
-      if (props.block && !props.vertical) {
-        return new Error('The block property requires the vertical property to be set to have any effect');
-      }
-    }
-  )
+const propTypes = {
+  vertical:  React.PropTypes.bool.isRequired,
+
+  block: all(
+    React.PropTypes.bool.isRequired,
+    ({ block, vertical }) => (
+      block && !vertical ?
+        new Error('`block` requires `vertical` to be set to have any effect') :
+        null
+    ),
+  ),
+};
 ```
 
-All validators will be validated one by one, stopping on the first failure.
+The provided validators will be validated in order, stopping on the first failure. The combined validator will succeed only if all provided validators succeed.
 
-The `all()` validator will only succeed when all validators provided also succeed.
+As in the example, this can be used to make a type assertion along with additional semantic assertions.
 
----
-#### elementType
+### [`componentOrElement`](/src/componentOrElement.js)
 
-Checks whether a property provides a type of element.
-The type of element can be provided in two forms:
-- tag name (string)
-- a return value of `React.createClass(...)`
+Checks that the value is a `ReactComponent` or a `DOMElement`.
 
-Example
 ```js
-propTypes: {
-  componentClass: CustomPropTypes.elementType
+const propTypes = {
+  container: componentOrElement,
+  requiredContainer: componentOrElement.isRequired,
+};
 ```
-Then, `componentClass` can be set by doing:
+
+This ensures that the value is of the right type to pass to `ReactDOM.findDOMNode()`, for cases where you need a DOM node.
+
+### [`deprecated(validator, reason)`](/src/deprecated.js)
+
+This validator will log a deprecation warning if the value is present.
+
 ```js
-<Component componentClass='span' />
+const propTypes = {
+  collapsable: deprecated(React.PropTypes.bool, 'Use `collapsible` instead.'),
+};
 ```
-or
+
+If the `collapsable` prop above is specified, this validator will log the warning:
+
+>The prop \`collapsable\` of \`MyComponent\` is deprecated. Use \`collapsible\` instead.
+
+This validator warns instead of failing on invalid values, and will still call the underlying validator if the deprecated value is present.
+
+This validator will only warn once on each deprecation. To clear the cache of warned messages, such as for clearing state between test cases intended to fail on deprecation warnings, call `deprecated._resetWarned()`.
+
+### [`elementType`](/src/elementType.js)
+
+Checks that the value is a React element type. This can be either a string (for DOM elements) or a `ReactClass` (for composite components).
+
 ```js
-const Button = React.createClass(...);
-...
-<Component componentClass={Button} />
+const propTypes = {
+  Component: elementType.isRequired,
+};
 ```
 
----
-#### isRequiredForA11y(requiredType)
+This ensures that the value of is the right type for creating a `ReactElement`, such as with `<Component {...props} />`.
 
-This is kind of `React.PropTypes.<type>.isRequired` with the custom error message:
-`The prop <propName> is required for users using assistive technologies`
+### [`isRequiredForA11y(validator)`](/src/isRequiredForA11y.js)
 
-Example
+This validator checks that the value required for accessibility are present.
+
 ```js
-propTypes: {
-  /**
-   * An html id attribute, necessary for accessibility
-   * @type {string}
-   * @required
-   */
-  id: CustomPropTypes.isRequiredForA11y(React.PropTypes.string)
+const propTypes = {
+  id: isRequiredForA11y(React.PropTypes.string),
+};
 ```
 
----
-#### keyOf(object)
+If the `id` prop above is not specified, the validator will fail with:
 
-Checks whether provided string value is one of provided object's keys.
+>The prop \`id\` is required to make \`MyComponent\` accessible for users of assistive technologies such as screen readers.
 
-Example
-```js
-const SIZES = {
-  'large': 'lg',
-  'small': 'sm'
-}
-
-propTypes: {
-  size: CustomPropTypes.keyOf(SIZES)
-}
-
-// this validates OK
-<Component size="large" />
-
-// this throws the error `expected one of ["large", "small"]`
-<Component size="middle" />
-```
-
-A more extended example
-```js
-const styleMaps = {
-  CLASSES: {
-    'alert': 'alert',
-    'button': 'btn'
-  ...
-  SIZES: {
-    'large': 'lg',
-    'medium': 'md',
-    'small': 'sm',
-    'xsmall': 'xs'
-  }
-...
-propTypes: {
-  /**
-   * bootstrap className
-   * @private
-   */
-  bsClass: CustomPropTypes.keyOf(styleMaps.CLASSES),
-  /**
-   * Style variants
-   * @type {("default"|"primary"|"success"|"info"|"warning"|"danger"|"link")}
-   */
-  bsStyle: CustomPropTypes.keyOf(styleMaps.STYLES),
-  /**
-   * Size variants
-   * @type {("xsmall"|"small"|"medium"|"large")}
-   */
-  bsSize: CustomPropTypes.keyOf(styleMaps.SIZES)
-}
-```
-
----
-#### mountable
-
-Checks whether a prop provides a DOM element
-The element can be provided in two forms:
-- Directly passed
-- Or passed an object that has a `render` method
-
-Example
-```js
-propTypes: {
-  modal: React.PropTypes.node.isRequired,
-  /**
-   * The DOM Node that the Component will render it's children into
-   */
-  container: CustomPropTypes.mountable
-```
-
-A variant of usage `<Overlay container={this}>`
-```js
-const Example = React.createClass({
-  getInitialState(){ return { show: true } },
-  toggle(){ this.setState({ show: !this.state.show }) },
-
-  render(){
-    const tooltip = <Tooltip>Tooltip overload!</Tooltip>;
-
-    return (
-      <div>
-        <Button ref='target' onClick={this.toggle}>
-          Click me!
-        </Button>
-
-        <Overlay container={this}>
-          { tooltip }
-        </Overlay>
-      </div>
-    );
-  }
-});
-
-React.render(<Example/>, mountNode);
-```
-
----
-#### singlePropFrom(...propertyNames)
-
-Used when it needs to assure that only one of properties can be used.
-
-Imagine we need the `value` for our `ButtonInput` component could be set
-by only one of two ways:
-- through `children`
-- through `value` preperty
-But not both.
-
-Like this:
-```js
-<ButtonInput> ButtonValue </ButtonInput>
-```
-or
-```js
-<ButtonInput value="ButtonValue" />
-```
-
-But this should throw the `only one of the following may be provided` error
-```js
-<ButtonInput value="ButtonValue"> SomeChildren </ButtonInput>
-```
-
-The possible solution
-```js
-import singlePropFrom from 'react-prop-types/lib/singlePropFrom';
-
-const typeList = [React.PropTypes.number, React.PropTypes.string];
-
-function childrenValueValidation(props, propName, componentName) {
-  let error = singlePropFrom('children', 'value')(props, propName, componentName);
-  if (!error) {
-    const oneOfType = React.PropTypes.oneOfType(typeList);
-    error = oneOfType(props, propName, componentName);
-  }
-  return error;
-}
-
-...
-
-ButtonInput.propTypes = {
-  children: childrenValueValidation,
-  value: childrenValueValidation
-```
-
----
-#### deprecated(propType, explanation)
-
-Helps with properties deprecations
-
-Example
-```js
-propTypes: {
-  collapsable: deprecated(React.PropTypes.bool, 'Use "collapsible" instead.')
-```
-
-In development mode it will write to the development console of a browser:
-```
-"collapsable" property of "ComponentName" has been deprecated.
-Use "collapsible" instead.
-```
-
-_Notice: this custom validator uses 'warning' package under the hood.
-And this package uses `console.error` channel instead of `console.warn`._
-
-[build-badge]: https://travis-ci.org/react-bootstrap/react-prop-types.svg?branch=master
+[build-badge]: https://img.shields.io/travis/react-bootstrap/react-prop-types/master.svg
 [build]: https://travis-ci.org/react-bootstrap/react-prop-types
+
+[npm-badge]: https://img.shields.io/npm/v/react-prop-types.svg
+[npm]: https://www.npmjs.org/package/react-prop-types

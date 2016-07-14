@@ -1,13 +1,22 @@
-export function isChainableAndUndefinedOK(validatorUnderTest) {
-  it('Should validate OK with undefined or null values', function() {
-    assert.isUndefined(validatorUnderTest({}, 'p', 'Component'));
-    assert.isUndefined(validatorUnderTest({p: null}, 'p', 'Component'));
-  });
+import React from 'react';
 
-  it('Should be able to chain', function() {
-    const err = validatorUnderTest.isRequired({}, 'p', 'Component');
-    assert.instanceOf(err, Error);
-    assert.include(err.message, 'Required prop');
-    assert.include(err.message, 'was not specified in');
-  });
+export function shouldWarn(about) {
+  console.error.expected.push(about); // eslint-disable-line no-console
+}
+
+// Work around React only warning once for each validation error.
+export function getValidationKey() {
+  return Math.random().toString(36).slice(2);
+}
+
+export function runValidator(validator, value, validationKey) {
+  const propName = `prop${validationKey || getValidationKey()}`;
+  const propTypes = {
+    [propName]: validator,
+  };
+
+  const ValidatedComponent = () => null;
+  ValidatedComponent.propTypes = propTypes;
+
+  React.createElement(ValidatedComponent, { [propName]: value });
 }

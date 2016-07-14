@@ -2,22 +2,34 @@ import warning from 'warning';
 
 let warned = {};
 
-export default function deprecated(propType, explanation) {
-  return function validate(props, propName, componentName) {
+export default function deprecated(validator, reason) {
+  return function validate(
+    props, propName, componentName, location, propFullName, ...args
+  ) {
+    const componentNameSafe = componentName || '<<anonymous>>';
+    const propFullNameSafe = propFullName || propName;
+
     if (props[propName] != null) {
-      const message = `"${propName}" property of "${componentName}" has been deprecated.\n${explanation}`;
-      if (!warned[message]) {
-        warning(false, message);
-        warned[message] = true;
-      }
+      const messageKey = `${componentName}.${propName}`;
+
+      warning(warned[messageKey],
+        `The ${location} \`${propFullNameSafe}\` of ` +
+        `\`${componentNameSafe}\` is deprecated. ${reason}.`
+      );
+
+      warned[messageKey] = true;
     }
 
-    return propType(props, propName, componentName);
+    return validator(
+      props, propName, componentName, location, propFullName, ...args
+    );
   };
 }
 
+/* eslint-disable no-underscore-dangle */
 function _resetWarned() {
   warned = {};
 }
 
 deprecated._resetWarned = _resetWarned;
+/* eslint-enable no-underscore-dangle */

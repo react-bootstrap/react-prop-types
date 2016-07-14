@@ -1,27 +1,4 @@
 {
-  "extends": ["eslint-config-airbnb"],
-  "env": {
-    "browser": true,
-    "node": true
-  },
-  "ecmaFeatures": {
-    "jsx": true
-  },
-  "parser": "babel-eslint",
-  "plugins": [
-    "babel"
-  ],
-  "rules": {
-    "constructor-super": 2,
-    "comma-dangle": 0,
-    "eqeqeq": [2, "allow-null"],
-    "one-var": [2, { "initialized": "never" }],
-    "key-spacing": 0,
-    "no-eq-null": 0,
-    "no-param-reassign": 0,
-    "no-this-before-super": 2,
-    "no-underscore-dangle": 0,
-    "no-undef": 2,
-    "babel/object-shorthand": 2
-  }
+  "extends": "airbnb-base",
+  "parser": "babel-eslint"
 }

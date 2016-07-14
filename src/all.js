@@ -1,27 +1,22 @@
-import {createChainableTypeChecker} from './common';
+import createChainableTypeChecker from './utils/createChainableTypeChecker';
 
-export default function all(...propTypes) {
-  if (propTypes === undefined) {
-    throw new Error('No validations provided');
-  }
+export default function all(...validators) {
+  function allPropTypes(...args) {
+    let error = null;
 
-  if (propTypes.some(propType => typeof propType !== 'function')) {
-    throw new Error('Invalid arguments, must be functions');
-  }
-
-  if (propTypes.length === 0) {
-    throw new Error('No validations provided');
-  }
-
-  function validate(props, propName, componentName) {
-    for (let i = 0; i < propTypes.length; i++) {
-      const result = propTypes[i](props, propName, componentName);
-
-      if (result !== undefined && result !== null) {
-        return result;
+    validators.forEach(validator => {
+      if (error != null) {
+        return;
       }
-    }
+
+      const result = validator(...args);
+      if (result != null) {
+        error = result;
+      }
+    });
+
+    return error;
   }
 
-  return createChainableTypeChecker(validate);
+  return createChainableTypeChecker(allPropTypes);
 }

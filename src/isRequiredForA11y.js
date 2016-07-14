@@ -1,12 +1,20 @@
-export default function isRequiredForA11y(propType) {
-  return function validate(props, propName, componentName) {
+export default function isRequiredForA11y(validator) {
+  return function validate(
+    props, propName, componentName, location, propFullName, ...args
+  ) {
+    const componentNameSafe = componentName || '<<anonymous>>';
+    const propFullNameSafe = propFullName || propName;
+
     if (props[propName] == null) {
       return new Error(
-        `The prop '${propName}' is required to make '${componentName}' accessible` +
-        ` for users using assistive technologies such as screen readers`
+        `The ${location} \`${propFullNameSafe}\` is required to make ` +
+        `\`${componentNameSafe}\` accessible for users of assistive ` +
+        'technologies such as screen readers.'
       );
     }
 
-    return propType(props, propName, componentName);
+    return validator(
+      props, propName, componentName, location, propFullName, ...args
+    );
   };
 }
