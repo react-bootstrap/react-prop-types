@@ -1,5 +1,7 @@
 import './setup';
 
+import React from 'react';
+
 import componentOrElement from '../src/componentOrElement';
 
 import describeChainableValidator from './describeChainableValidator';
@@ -18,8 +20,14 @@ describe('componentOrElement', () => {
     validate({});
   });
 
-  // It makes no sense to pull in a DOM dependency just to run this test, so
-  // fake the two values here.
+  it('should fail on ReactElement', () => {
+    shouldWarn('of type ReactElement');
+    shouldWarn('expected a ReactComponent or a DOMElement');
+
+    validate(React.createElement('span'));
+  });
+
+  // Fake these values here instead of pulling in a DOM just for this test.
   [
     ['DOMElement', { nodeType: 1 }],
     ['ReactComponent', { render: () => null }],

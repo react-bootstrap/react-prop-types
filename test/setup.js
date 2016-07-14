@@ -32,10 +32,11 @@ beforeEach(() => {
 
 afterEach(() => {
   /* eslint-disable no-console */
-  if (!console.error.threw && console.error.expected.length) {
-    expect(console.error.warned).to.have.keys(console.error.expected);
-  }
-
+  const { expected, warned, threw } = console.error;
   console.error.restore();
+
+  if (!threw && expected.length) {
+    expect(warned).to.have.keys(expected);
+  }
   /* eslint-enable no-console */
 });
