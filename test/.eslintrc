@@ -1,17 +1,12 @@
 {
+  "extends": "airbnb",
   "env": {
     "mocha": true
-  },
-  "globals": {
-    "assert": true,
-    "expect": true,
-    "sinon": true
   },
   "plugins": [
     "mocha"
   ],
   "rules": {
-    "func-names": 0,
     "no-unused-expressions": 0,
     "mocha/no-exclusive-tests": 2
   }
