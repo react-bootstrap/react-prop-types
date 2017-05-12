@@ -1,3 +1,9 @@
+
+# DEPRECATED!!!!!!
+# USE https://github.com/react-bootstrap/prop-types-extra
+
+(its the same thing)
+
 # react-prop-types [![Travis][build-badge]][build] [![npm][npm-badge]][npm]
 
 Additional [PropTypes](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) for [React](https://facebook.github.io/react/).
