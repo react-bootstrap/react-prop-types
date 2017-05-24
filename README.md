@@ -2,7 +2,7 @@
 # DEPRECATED!!!!!!
 # USE https://github.com/react-bootstrap/prop-types-extra
 
-(its the same thing)
+(it's the same thing)
 
 # react-prop-types [![Travis][build-badge]][build] [![npm][npm-badge]][npm]
 
